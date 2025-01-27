@@ -9,8 +9,8 @@ spring:
           clone-on-start: true
           timeout: 10
           force-pull: true
-          username: "jhaashish03"
-          password: "@$#!$#J#@03sep"
+          username: "<username>"
+          password: "<your-pass>"
           try-master-branch: true
 
 
