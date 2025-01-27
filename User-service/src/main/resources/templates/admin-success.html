@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Created Successfully</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .success-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .success-container h1 {
+            color: #4CAF50;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .success-container p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .success-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .success-container button:hover {
+            background-color: #003366;
+        }
+        header {
+            background-color: #004080;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            margin-top: -280px;
+            margin-bottom: 100px;
+
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/reg-pass}">Register</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/login}">Login</a></li>
+            <li><a th:href="@{/air-india/users/v1/flights}">View Flights</a></li>
+        </ul>
+    </nav>
+</header>
+<!--/*@thymesVar id="adminSuccessPageDto" type="com.ewallet.userservice.dtos.AdminSuccessPageDto"*/-->
+
+<div class="success-container">
+    <h1 th:text="${adminSuccessPageDto.getSubject()}"></h1>
+    <p th:text="${adminSuccessPageDto.getSubSubject()}"></p>
+    <button onclick="window.location.href='/air-india/users/v1/admins/'">Back to Admin Page</button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification Failed</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .failure-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-top: 20px;
+        }
+
+        .failure-container h1 {
+            color: #e74c3c;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .failure-container p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .failure-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .failure-container button:hover {
+            background-color: #003366;
+        }
+        header {
+            background-color: #004080;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            margin-top: -350px;
+
+
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/reg-pass}">Register</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/login}">Login</a></li>
+            <li><a th:href="@{/air-india/users/v1/flights}">View Flights</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="failure-container">
+    <h1>Verification Failed</h1>
+    <p>The OTP you entered is incorrect. Please try again.</p>
+    <form th:action="@{/air-india/users/v1/accounts/verifyEmail/{userName}(userName=${account.getUsername()})}" method="post">
+        <button type="submit">Go to Email Verification</button>
+    </form>
+    <button th:href="@{/home}">Go to Home</button>
+</div>
+
+</body>
+</html>

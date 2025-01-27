@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Booking</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+        }
+        h3 {
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+            color: #444;
+        }
+        .details p {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+        .details p strong {
+            color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #0056b3;
+            color: white;
+        }
+        table tr:nth-child(even) {
+            background-color: #f7faff;
+        }
+        .payment-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .payment-btn {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .payment-btn:hover {
+            background-color: #004399;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff5722;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Upgrade Your Booking</h1>
+
+    <div class="section">
+        <h3>Flight Details</h3>
+        <div class="details">
+            <p><strong>Flight Number:</strong> <span th:text="${ticketUpgradeRequestDto.flightNumber}"></span></p>
+            <p><strong>Flight Name:</strong> <span th:text="${ticketUpgradeRequestDto.flightName}"></span></p>
+            <p><strong>Take-Off Time:</strong> <span th:text="${ticketUpgradeRequestDto.takeOffTime}"></span></p>
+            <p><strong>Landing Time:</strong> <span th:text="${ticketUpgradeRequestDto.landingTime}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${ticketUpgradeRequestDto.date}"></span></p>
+            <p><strong>Source:</strong> <span th:text="${ticketUpgradeRequestDto.source}"></span></p>
+            <p><strong>Destination:</strong> <span th:text="${ticketUpgradeRequestDto.destination}"></span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Reservation Details</h3>
+        <div class="details">
+            <p><strong>Reservation ID:</strong> <span th:text="${ticketUpgradeRequestDto.reservationId}"></span></p>
+            <p><strong>Reservation Status:</strong> <span th:text="${ticketUpgradeRequestDto.reservationStatus}"></span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Fare Details</h3>
+        <p><strong>Amount Already Paid:</strong> <span class="highlight" th:text="${ticketUpgradeRequestDto.paidAmount}"></span></p>
+        <p><strong>Amount To Be Paid:</strong> <span class="highlight" th:text="${ticketUpgradeRequestDto.amountToBePaid}"></span></p>
+    </div>
+
+    <div class="section">
+        <h3>Seat Availability</h3>
+        <p><strong>Seats Available:</strong> <span class="highlight" th:text="${#strings.equals(ticketUpgradeRequestDto.seatStatus, 'WAITING') ? 'WL' + ticketUpgradeRequestDto.seatsAvailable : #strings.equals(ticketUpgradeRequestDto.seatStatus, 'AVAILABLE') ? 'AVL' + ticketUpgradeRequestDto.seatsAvailable : ticketUpgradeRequestDto.seatsAvailable}"></span></p>
+    </div>
+    <div class="section">
+        <h3>Passenger Details</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Passenger Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Seat Type</th>
+                <th th:if="${ticketUpgradeRequestDto.reservationStatus != 'CANCELLED'}">Seat Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="passenger : ${ticketUpgradeRequestDto.bookingDetailPassengerWises}">
+                <td th:text="${passenger.passenger.name}"></td>
+                <td th:text="${passenger.passenger.age}"></td>
+                <td th:text="${passenger.passenger.gender}"></td>
+                <td th:text="${passenger.seatType}"></td>
+                <td th:if="${ticketUpgradeRequestDto.reservationStatus != 'CANCELLED'}" th:text="${passenger.seatNumber}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="payment-section">
+        <a th:href="${ticketUpgradeRequestDto.paymentUrl}" class="payment-btn">Proceed to Payment</a>
+    </div>
+    <button onclick="window.location.href='/air-india/users/v1/users/'" class="payment-btn">Back to Users Page</button>
+</div>
+</body>
+</html>

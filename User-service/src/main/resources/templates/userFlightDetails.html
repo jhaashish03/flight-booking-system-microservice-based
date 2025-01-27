@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Flight Search Results</title>
+    <style>
+        /* Page styling based on previous styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .flight-results-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: #004080;
+            margin-bottom: 20px;
+        }
+
+        .flight-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .flight-table th, .flight-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .flight-table th {
+            background-color: #004080;
+            color: white;
+        }
+
+        .flight-table tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .no-seats {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .back-btn, .book-btn{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #004080;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .back-btn:hover, .book-btn:hover {
+            background-color: #003366;
+        }
+        header {
+            background-color: #004080;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            margin-top: -30px;
+
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .waiting {
+            background-color: #d3d3d3; /* Light gray for 'Waiting' */
+            color: #555; /* Darker text color */
+            cursor: not-allowed;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/reg-pass}">Register</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/login}">Login</a></li>
+            <li><a th:href="@{/air-india/users/v1/users/}">View Flights</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="flight-results-container">
+    <h2 class="header">Flight Schedule</h2>
+    <p>Source: <span th:text="${flightDetails.source}"></span></p>
+    <p>Destination: <span th:text="${flightDetails.destination}"></span></p>
+    <p>Date: <span th:text="${flightDetails.date}"></span></p>
+
+    <table class="flight-table">
+        <thead>
+        <tr>
+            <th>Flight Number</th>
+            <th>Flight Name</th>
+            <th>Takeoff Time</th>
+            <th>Landing Time</th>
+            <th>Fare</th>
+            <th>Seats Available</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="flight : ${flightDetails.flightDetailList}">
+            <td th:text="${flight.flightNumber}">1234</td>
+            <td th:text="${flight.flightName}">Sample Flight</td>
+            <td th:text="${flight.takeOffTime}">03:57</td>
+            <td th:text="${flight.landingTime}">04:58</td>
+            <td th:text="${flight.fare}">48</td>
+            <td th:text="${#strings.equals(flight.seatStatus, 'WAITING') ? 'WL' + flight.seats : #strings.equals(flight.seatStatus, 'AVAILABLE') ? 'AVL' + flight.seats : flight.seats}"></td>
+
+            <td>
+                <form th:action="@{/air-india/users/v1/users/flights/book}" method="post">
+                    <input type="hidden" name="flightNumber" th:value="${flight.flightNumber}">
+                    <input type="hidden" name="flightName" th:value="${flight.flightName}">
+                    <input type="hidden" name="takeOffTime" th:value="${flight.takeOffTime}">
+                    <input type="hidden" name="landingTime" th:value="${flight.landingTime}">
+                    <input type="hidden" name="fare" th:value="${flight.fare}">
+                    <input type="hidden" name="date" th:value="${flightDetails.date}">
+                    <input type="hidden" name="source" th:value="${flightDetails.source}">
+                    <input type="hidden" name="destination" th:value="${flightDetails.destination}">
+                    <input type="hidden" name="seatType" th:value="${flightDetails.seatType}">
+                    <button type="submit" class="book-btn" th:classappend="${flight.seats == 0} ? 'waiting' : ''">
+                        <span th:text="${flight.seats == 0} ? 'Waiting' : 'Book Now'"></span>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/air-india/users/v1/users/" class="back-btn">Go Back</a>
+</div>
+
+</body>
+</html>

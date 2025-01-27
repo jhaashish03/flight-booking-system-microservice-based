@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Booking Checkout</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f7;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: linear-gradient(145deg, #ffffff, #e4e9f1);
+            border-radius: 12px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.7);
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        h3 {
+            color: #444;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .details p {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+        .details p strong {
+            color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 0.95rem;
+        }
+        table th {
+            background-color: #0056b3;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        table tr:nth-child(even) {
+            background-color: #f7faff;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff5722;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff5722;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        .button a:hover {
+            background-color: #003d82;
+        }
+        .payment-btn {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .payment-btn:hover {
+            background-color: #004399;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Ticket Booking Checkout</h1>
+
+    <div class="section">
+        <h3>Flight Details</h3>
+        <div class="details">
+            <p><strong>Flight Number:</strong> <span th:text="${ticketBookingDto.flightNumber}"></span></p>
+            <p><strong>Flight Name:</strong> <span th:text="${ticketBookingDto.flightName}"></span></p>
+            <p><strong>Take-Off Time:</strong> <span th:text="${ticketBookingDto.takeOffTime}"></span></p>
+            <p><strong>Landing Time:</strong> <span th:text="${ticketBookingDto.landingTime}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${ticketBookingDto.date}"></span></p>
+            <p><strong>Source:</strong> <span th:text="${ticketBookingDto.source}"></span></p>
+            <p><strong>Destination:</strong> <span th:text="${ticketBookingDto.destination}"></span></p>
+            <p><strong>Seat Type:</strong> <span th:text="${ticketBookingDto.seatType}"></span></p>
+        </div>
+    </div>
+    <div class="section">
+        <h3>Fare Details</h3>
+        <p><strong>Total Fare:</strong> <span class="highlight" th:text="${totalFare}"></span></p>
+    </div>
+    <div class="section">
+        <h3>Passenger Details</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Passenger Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="passenger : ${ticketBookingDto.passengerDtos}">
+                <td th:text="${passenger.name}"></td>
+                <td th:text="${passenger.age}"></td>
+                <td th:text="${passenger.gender}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="button">
+        <a th:href="${paymentUrl}" target="_blank">Proceed to Payment</a>
+    </div>
+
+    <button onclick="window.location.href='/air-india/users/v1/users/'" class="payment-btn">Back to Users Page</button>
+</div>
+<div class="footer">
+    <p>Thank you for choosing our service. Have a pleasant journey!</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: "flight-service"
+  profiles:
+    active: "prod"
+
+  config:
+    import: "configserver:http://localhost:5050"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+
+logging:
+  level:
+    root: debug
+app:
+  version: "v1"
+server:
+  port: 7072

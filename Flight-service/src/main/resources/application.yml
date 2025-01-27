@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: "flight-service"
+  profiles:
+    active: "prod"
+
+  config:
+    import: "configserver:http://localhost:5050"
+
+
+logging:
+  level:
+    root: debug
+app:
+  version: "v1"
+server:
+  port: 7072

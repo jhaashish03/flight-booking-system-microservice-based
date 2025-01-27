@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Form</title>
+    <style>
+        /* Overall page styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Form container styling */
+        .container {
+            width: 70%;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header styling */
+        h2 {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            color: #004080;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top:  -20px;
+            margin-right: -30%;
+
+        }
+
+        /* Passenger form container */
+        .passenger-form-container {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Styling for each input field */
+        .passenger-form-container div {
+            margin-bottom: 10px;
+        }
+
+        .passenger-form-container label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .passenger-form-container input[type="text"],
+        .passenger-form-container input[type="number"],
+        .passenger-form-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* Add and submit buttons styling */
+        button {
+            padding: 10px 20px;
+            background-color: #004080;
+            color: white;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            margin-top: 10px;
+        }
+
+        /* Hover effect for buttons */
+        button:hover {
+            background-color: #003366;
+        }
+
+        /* Add another passenger button styling */
+        button[type="button"] {
+            background-color: #28a745;
+            margin-top: 20px;
+        }
+
+        button[type="button"]:hover {
+            background-color: #218838;
+        }
+
+        /* Remove button styling */
+        .passenger-form-container button[type="button"] {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .passenger-form-container button[type="button"]:hover {
+            background-color: #c0392b;
+        }
+
+        /* Styling for the error message */
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Ensure buttons align in center */
+        .container button {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        let passengerIndex = 0;
+
+        function addPassenger() {
+            passengerIndex++; // Increment index for each new passenger
+            const container = document.getElementById('passenger-container');
+            const passengerForm = document.createElement('div');
+            passengerForm.className = 'passenger-form-container';
+
+            passengerForm.innerHTML = `
+                <div>
+                    <label>Name:</label>
+                    <input type="text" name="passengers[${passengerIndex}].name" placeholder="Name" required />
+                </div>
+                <div>
+                    <label>Age:</label>
+                    <input type="number" name="passengers[${passengerIndex}].age" placeholder="Age" required />
+                </div>
+                <div>
+                    <label>Gender:</label>
+                    <select name="passengers[${passengerIndex}].gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button type="button" onclick="removePassenger(this)">Remove</button>
+                <hr/>
+            `;
+            container.appendChild(passengerForm);
+        }
+
+        function removePassenger(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</head>
+<body>
+
+<h2>Booking Details</h2>
+<form th:action="@{/air-india/users/v1/users/proceedToPayment}" method="post" th:object="${bookingRequestDto}">
+    <input type="hidden" name="flightNumber" th:value="${ticketBookingDto.flightNumber}">
+    <input type="hidden" name="flightName" th:value="${ticketBookingDto.flightName}">
+    <input type="hidden" name="takeOffTime" th:value="${ticketBookingDto.takeOffTime}">
+    <input type="hidden" name="landingTime" th:value="${ticketBookingDto.landingTime}">
+    <input type="hidden" name="fare" th:value="${ticketBookingDto.fare}">
+    <input type="hidden" name="date" th:value="${ticketBookingDto.date}">
+    <input type="hidden" name="source" th:value="${ticketBookingDto.source}">
+    <input type="hidden" name="destination" th:value="${ticketBookingDto.destination}">
+    <input type="hidden" name="seatType" th:value="${ticketBookingDto.seatType}">
+    <div id="passenger-container">
+        <!-- Initial passenger form can be rendered by Thymeleaf if needed -->
+        <div class="passenger-form-container">
+            <div>
+                <label>Name:</label>
+                <input type="text" name="passengers[0].name" placeholder="Name" required />
+            </div>
+            <div>
+                <label>Age:</label>
+                <input type="number" name="passengers[0].age" placeholder="Age" required />
+            </div>
+            <div>
+                <label>Gender:</label>
+                <select name="passengers[0].gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <hr/>
+        </div>
+    </div>
+
+    <button type="button" onclick="addPassenger()">Add Another Passenger</button>
+    <button type="submit">Proceed to Payment</button>
+</form>
+
+</body>
+</html>

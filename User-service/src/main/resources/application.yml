@@ -1,0 +1,27 @@
+
+spring:
+  application:
+    name: "user-service"
+  profiles:
+    active: "prod"
+
+  config:
+    import: "configserver:http://localhost:5050"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+  session:
+    redis:
+      cleanup-cron:  0 0/24 * * *
+      repository-type: indexed
+
+
+logging:
+  level:
+    root: debug
+app:
+  version: "v1"
+server:
+  port: 3000

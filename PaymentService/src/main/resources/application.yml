@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: "payment-service"
+  profiles:
+    active: "prod"
+
+  config:
+    import: "configserver:http://localhost:5050"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+
+
+logging:
+  level:
+    root: debug
+

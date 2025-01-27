@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verification - Enter OTP</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .verification-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .verification-container h1 {
+            color: #004080;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .verification-container p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .verification-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .verification-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .verification-container button:hover {
+            background-color: #003366;
+        }
+
+        .resend-link {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #004080;
+            text-decoration: none;
+        }
+
+        .resend-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Include header fragment -->
+<!--<div th:insert="fragments :: header"></div>-->
+
+<div class="verification-container">
+    <h1>Email Verification</h1>
+    <p>Please enter the OTP sent to your email address.</p>
+    <form th:action="@{/air-india/users/v1/accounts/verifyOtp/{userName}(userName=${account.getUsername()})}" method="post">
+        <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
+        <button type="submit">Verify OTP</button>
+    </form>
+    <form th:action="@{/air-india/users/v1/accounts/resend-otp/{userName}(userName=${account.getUsername()})}" method="post">
+        <button type="submit" class="resend-link">Resend OTP</button>
+    </form>
+</div>
+
+</body>
+</html>

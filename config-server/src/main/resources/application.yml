@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: "config-server"
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/jhaashish03/config-server-configs.git"
+          clone-on-start: true
+          timeout: 10
+          force-pull: true
+          username: "jhaashish03"
+          password: "@$#!$#J#@03sep"
+          try-master-branch: true
+
+
+
+encrypt:
+  key-store:
+    alias:
+  key: "1e81d4db-604c-4e34-b3d0-d44ccdad5aa6"
+
+
+
+server:
+  port: 5050
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+

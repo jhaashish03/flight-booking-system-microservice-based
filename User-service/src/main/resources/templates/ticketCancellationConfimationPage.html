@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ticket Booking Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f7;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: linear-gradient(145deg, #ffffff, #e4e9f1);
+            border-radius: 12px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.7);
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        h3 {
+            color: #444;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .details p {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+        .details p strong {
+            color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 0.95rem;
+        }
+        table th {
+            background-color: #0056b3;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        table tr:nth-child(even) {
+            background-color: #f7faff;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ff5722;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .action-buttons form button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-confirm {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-confirm:hover {
+            background-color: #218838;
+        }
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${title}"></h1>
+
+    <div class="section">
+        <h3>Flight Details</h3>
+        <div class="details">
+            <p><strong>Flight Number:</strong> <span th:text="${ticketBookingResponseDto.flightNumber}"></span></p>
+            <p><strong>Flight Name:</strong> <span th:text="${ticketBookingResponseDto.flightName}"></span></p>
+            <p><strong>Take-Off Time:</strong> <span th:text="${ticketBookingResponseDto.takeOffTime}"></span></p>
+            <p><strong>Landing Time:</strong> <span th:text="${ticketBookingResponseDto.landingTime}"></span></p>
+            <p><strong>Date:</strong> <span th:text="${ticketBookingResponseDto.date}"></span></p>
+            <p><strong>Source:</strong> <span th:text="${ticketBookingResponseDto.source}"></span></p>
+            <p><strong>Destination:</strong> <span th:text="${ticketBookingResponseDto.destination}"></span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Fare Details</h3>
+        <p><strong>Total Fare:</strong> <span class="highlight" th:text="${ticketBookingResponseDto.totalFare}"></span></p>
+    </div>
+
+    <div class="section">
+        <h3>Reservation Details</h3>
+        <div class="details">
+            <p><strong>Reservation ID:</strong> <span th:text="${ticketBookingResponseDto.reservationId}"></span></p>
+            <p><strong>Reservation Status:</strong> <span th:text="${ticketBookingResponseDto.reservationStatus}"></span></p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Passenger Details</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Passenger Name</th>
+                <th>Ticket Status</th>
+                <th>Seat Type</th>
+                <th>Seat Number</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="passenger : ${ticketBookingResponseDto.bookingDetailPassengerWises}">
+                <td th:text="${passenger.passenger.name}"></td>
+                <td th:text="${passenger.ticketStatus}"></td>
+                <td th:text="${passenger.seatType}"></td>
+                <td th:text="${#strings.equals(passenger.ticketStatus, 'WAITING') ? 'WL' + passenger.seatNumber : #strings.equals(passenger.ticketStatus, 'CONFIRMED') ? 'CF' + passenger.seatNumber : passenger.seatNumber}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <!-- Confirm Cancellation -->
+        <form th:action="@{/air-india/users/v1/users/reservation/cancel/confirm}" method="post">
+            <input type="hidden" name="reservationId" th:value="${ticketBookingResponseDto.reservationId}"/>
+            <button type="submit" class="btn-confirm">Confirm Cancellation</button>
+        </form>
+        <!-- Go Back -->
+        <form th:action="@{/air-india/users/v1/users/}" method="get">
+            <button type="submit" class="btn-cancel">Go Back</button>
+        </form>
+    </div>
+</div>
+<div class="footer">
+    <p>Thank you for choosing our service. Have a pleasant journey!</p>
+</div>
+</body>
+</html>

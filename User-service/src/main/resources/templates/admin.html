@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #004080;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],input[type="email"],input[type="password"],input[type="time"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003366;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+        header {
+            background-color: #004080;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            margin-top: -20px;
+
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
+
+        header nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/reg-pass}">Register</a></li>
+            <li><a th:href="@{/air-india/users/v1/accounts/login}">Login</a></li>
+            <li><a th:href="@{/air-india/users/v1/flights}">View Flights</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    <div class="section">
+        <h3>Add New Admin</h3><br/>
+        <!--/*@thymesVar id="accountCreationDto" type="com.ewallet.userservice.dtos.AccountCreationDto"*/-->
+
+        <form th:action="@{/air-india/users/v1/admins/admin}" method="post" th:object="${accountCreationDto}">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" required />
+            </div>
+            <div class="form-group">
+                <label for="userName">Username:</label>
+                <input type="text" id="userName" th:field="*{userName}" required />
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" th:field="*{firstName}" required />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" th:field="*{lastName}" />
+            </div>
+
+            <div class="form-group">
+<!--                <label for="password">Password:</label>-->
+                <input type="hidden" id="password" th:field="*{password}" required />
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+
+    <!-- Section 1: Add Flight Details -->
+    <div class="section">
+        <h3>Add Flight Details</h3><br/>
+        <!--/*@thymesVar id="flightCreationDto" type="com.ewallet.userservice.dtos.FlightCreationDto"*/-->
+        <form th:action="@{/air-india/users/v1/admins/flights/flight}" method="post" th:object="${flightCreationDto}">
+            <label for="flightNumber">Flight Number:</label>
+            <input type="text" id="flightNumber" name="flightNumber"  th:field="*{flightNumber}" required>
+
+            <label for="flightName">Flight Name:</label>
+            <input type="text" id="flightName" name="flightName" th:field="*{flightName}" required>
+
+            <label for="source">Source:</label>
+            <input type="text" id="source" name="source" th:field="*{source}" required>
+
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" name="destination" th:field="*{destination}" required>
+
+            <label for="takeOffTime">TakeOffTime:</label>
+            <input type="time" id="takeOffTime" name="takeOffTime" th:field="*{takeOffTime}" required>
+            <label for="landingTime">LandingTime:</label>
+            <input type="time" id="landingTime" name="landingTime" th:field="*{landingTime}" required>
+            <label for="totalSeats">Total Seats:</label><br/>
+            <input type="number" id="totalSeats" name="totalSeats" th:field="*{totalSeats}" required><br/>
+
+            <label for="economyFare"> Economy Fare</label><br/>
+            <input type="number" id="economyFare" name="economyFare" th:field="*{economyFare}" required><br/>
+
+            <label for="businessFare"> Business Fare</label><br/>
+            <input type="number" id="businessFare" name="businessFare" th:field="*{businessFare}" required><br/>
+
+            <button type="submit">Add Flight</button>
+        </form>
+    </div>
+
+    <!-- Section 2: Check Availability of Seats -->
+    <div class="section">
+        <h3>Check Seat Availability</h3><br/>
+        <form th:action="@{/air-india/users/v1/admins/flights/checkAvailability}" method="post">
+            <label for="source">Source:</label>
+            <input type="text" id="source" name="source" required>
+
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" name="destination" required>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <br><br>
+
+                <label for="seatType">Seat Type</label>
+                <select id="seatType" name="seatType" required>
+                    <option value="">Select Seat Type</option>
+                    <option value="ECONOMY">ECONOMY</option>
+                    <option value="BUSINESS">BUSINESS</option>
+                </select>
+
+            <button type="submit">Check Availability</button>
+        </form>
+    </div>
+
+    <!-- Section 3: Generate Reports -->
+    <div class="section">
+        <h3>Generate Reports</h3><br/>
+        <form th:action="@{/air-india/users/v1/admins/generate-reservation-report}" method="post" onsubmit="showPopup(event)">
+            <label for="reportDate">Date:</label>
+            <input type="date" id="reportDate" name="date" required><br/>
+            <br/>
+            <label for="reportDestination">Destination:</label>
+            <input type="text" id="reportDestination" name="destination" required>
+
+            <button type="submit">Generate Report</button>
+        </form>
+    </div>
+</div>
+
+</body>
+<script>
+    function showPopup(event) {
+        alert("The download has started!");
+    }
+</script>
+</html>
